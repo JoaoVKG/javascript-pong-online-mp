@@ -15,8 +15,40 @@
 </head>
 <body>
     <div class="gameButtons">
-        <button class="createGame" placeholder="Criar Servidor">Criar Servidor</button>
+        <button id="createGame" placeholder="Criar Servidor">Criar Servidor</button>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+        <input type="text" id="serverName">
+    </div>
+    <br>
+    <div class="gameButtons">
+        <button id="enterGame" placeholder="Entrar no Jogo">Entrar no Jogo</button>
+    </div>
+    
+    
 </body>
-<script src="js/main.js"></script>
+<script>
+    var host = window.location.host;
+    var socket = io(host);
+
+    $('#createGame').click(function() {
+        var randomid = Math.random().toString(36).substring(7); 
+        socket.emit('createdGame', {
+            nsp: randomid
+        })
+        window.location.href = '/' + randomid;
+    })
+
+    $('#enterGame').click(function() {
+        var serverName = $('#serverName').val();
+        window.location.href = '/' + serverName;
+    })
+
+</script>
 </html>

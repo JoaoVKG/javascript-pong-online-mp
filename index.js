@@ -29,18 +29,28 @@ app.set('io', io);
 
 io.on('connection', function(socket) {
     console.log('user connected');
-
+    var nspPlayers = [];
+    
     socket.on('disconnect', function() {
         console.log('user disconnected');
     })
 
     socket.on('createdGame', function(data) {
         var nsp = io.of('/' + data.nsp);
-        nsp.on('connection', function(socket){
-            console.log('someone connected at ' + data.nsp);
-            socket.on('click', function() {
-                socket.broadcast.emit('clicked');
-            })
+        nspPlayers[data.nsp] = 0;
+        nsp.on('connection', function(socket) {
+            if (nspPlayers[data.nsp] < 2) {
+                console.log('someone connected at ' + data.nsp);
+                nspPlayers[data.nsp]++;
+                socket.on('click', function() {
+                    socket.broadcast.emit('clicked');
+                })
+                if (nspPlayers[data.nsp] == 2) {
+
+                }
+            } else {
+                socket.emit('serverFull');
+            }
         });
     })
 

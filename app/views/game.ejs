@@ -30,5 +30,8 @@
     socket.on('clicked', function() {
         alert('hey');
     })
+    socket.on('serverFull', function() {
+        window.location.href = '/';
+    })
 </script>
 </html>

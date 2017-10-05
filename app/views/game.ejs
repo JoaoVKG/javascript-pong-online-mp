@@ -1,37 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Pong</title>
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
+    <script src="p5.min.js"></script>
+    <script src="addons/p5.dom.min.js"></script>
+    <script src="addons/p5.sound.min.js"></script>
+    <script src="addons/p5.play.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script> -->
+    <script src="js/jquery-2.2.1.js"></script>
+    <link rel="stylesheet" href="css/gamestyle.css">
 </head>
-<body>   
-    <div class="score" id="score1">0</div>
-    <div class="score" id="score2">0</div>
-    <div class="paddle" id="paddle1"></div>
-    <div class="paddle" id="paddle2"></div>
-    <div id="ball"></div>
-    <div id="net"></div>
+
+<body>
 </body>
 <script>
-    console.log('<%=nsp%>');
+    var paddle1MovedUp = false;
+    var paddle1MovedDown = false;
+    var paddle2MovedUp = false;
+    var paddle2MovedDown = false;
+    var canMove = false;
+    var admin = false;
+
     var socket = io('/<%=nsp%>');
     $('body').click(function() {
         socket.emit('click');
     })
-    socket.on('clicked', function() {
-        alert('hey');
-    })
     socket.on('serverFull', function() {
         window.location.href = '/';
     })
+    socket.on('gameStarted', function(data) {
+        Ball.xspeed = data.BallServer.xspeed;
+        Ball.yspeed = data.BallServer.yspeed; 
+        canMove = data.canMove
+    })
+    
+    socket.on('isAdmin', function(data) {
+        admin = data.admin;
+    })
+    socket.on('paddle1MovedUpServer', function() {
+        paddle1MovedDown = false;
+        paddle1MovedUp = true;
+    })
+    socket.on('paddle1StoppedServer', function() {
+        paddle1MovedUp = false;
+        paddle1MovedDown = false;
+    })
+    socket.on('paddle1MovedDownServer', function() {
+        paddle1MovedUp = false;
+        paddle1MovedDown = true;
+    })
+
+    socket.on('paddle2MovedUpServer', function() {
+        paddle2MovedDown = false;
+        paddle2MovedUp = true;
+    })
+    socket.on('paddle2StoppedServer', function() {
+        paddle2MovedUp = false;
+        paddle2MovedDown = false;
+    })
+    socket.on('paddle2MovedDownServer', function() {
+        paddle2MovedUp = false;
+        paddle2MovedDown = true;
+    })
+
+
 </script>
+<script src="sketch.js"></script>
 </html>

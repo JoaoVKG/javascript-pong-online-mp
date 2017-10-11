@@ -68,7 +68,6 @@ io.on('connection', function(socket) {
                     socket.broadcast.emit('paddle1StoppedServer');
                 })
 
-
                 socket.on('paddle2MovedUpClient', function() {
                     socket.emit('paddle2MovedUpServer');
                     socket.broadcast.emit('paddle2MovedUpServer');
@@ -101,6 +100,13 @@ io.on('connection', function(socket) {
 
                 socket.on('ballTouchedWallClient', function() {
                     socket.broadcast.emit('ballTouchedWallServer');
+                })
+
+                socket.on('ballResetedClient', function() {
+                    resetBallServer();
+                    socket.emit('ballResetedServer', {
+                        BallServer: BallServer
+                    })
                 })
 
                 if (nspPlayers[data.nsp] == 1) {

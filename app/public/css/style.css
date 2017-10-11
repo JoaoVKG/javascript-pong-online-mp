@@ -1,8 +1,13 @@
+@font-face {
+    font-family: PressStartFont;
+    src: url(../fonts/PressStart2P.ttf);
+}
+
 body, html, button, input {
     height: 100%;
     background: black;
     color: white;
-    font-family: 'Press Start 2P', monospace;
+    font-family: PressStartFont, monospace;
     font-weight: bold;
     font-size: xx-large;
     text-align: center;

@@ -82,6 +82,9 @@ function draw() {
 }
 
 function resetBall() {
+    if (canMove) {
+        socket.emit('ballResetedClient');
+    }
     createBall();
 }
 

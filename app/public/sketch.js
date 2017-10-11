@@ -82,7 +82,7 @@ function draw() {
 }
 
 function resetBall() {
-    if (canMove) {
+    if (canMove && admin) {
         socket.emit('ballResetedClient');
     }
     createBall();

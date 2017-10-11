@@ -24,6 +24,12 @@
     var paddle2MovedDown = false;
     var canMove = false;
     var admin = false;
+    var ballx = 800;
+    var bally = 400;
+    var scored1 = false;
+    var scored2 = false;
+    var canPlayScoreSound = false;
+    var canPlayWallSound = false;
 
     var socket = io('/<%=nsp%>');
     $('body').click(function() {
@@ -66,6 +72,29 @@
         paddle2MovedUp = false;
         paddle2MovedDown = true;
     })
+    if (!admin) {
+        socket.on('ballMovementServer', function(data) {
+            ballx = data.Ballx;
+            bally = data.Bally;
+        })
+
+        socket.on('paddle2ScoredServer', function(data) {
+            scored2 = true,
+            canPlayScoreSound = true
+        })
+
+        socket.on('paddle1ScoredServer', function(data) {
+            scored1 = true,
+            canPlayScoreSound = true
+        })
+
+        socket.on('ballTouchedWallServer', function() {
+            canPlayWallSound = true;
+        })
+
+    }
+
+   
 
 
 </script>

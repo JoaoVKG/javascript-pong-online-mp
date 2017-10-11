@@ -84,6 +84,25 @@ io.on('connection', function(socket) {
                     socket.broadcast.emit('paddle2StoppedServer');
                 })
 
+                socket.on('ballMovementClient', function(data) {
+                    socket.broadcast.emit('ballMovementServer', {
+                        Ballx: data.BallxServer,
+                        Bally: data.BallyServer
+                    });
+                })
+
+                socket.on('paddle2ScoredClient', function() {
+                    socket.broadcast.emit('paddle2ScoredServer')
+                })
+                
+                socket.on('paddle1ScoredClient', function() {
+                    socket.broadcast.emit('paddle1ScoredServer')
+                })
+
+                socket.on('ballTouchedWallClient', function() {
+                    socket.broadcast.emit('ballTouchedWallServer');
+                })
+
                 if (nspPlayers[data.nsp] == 1) {
                     socket.emit('isAdmin', {
                         admin: true

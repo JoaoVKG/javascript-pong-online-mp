@@ -115,23 +115,56 @@ function createScores() {
 }
 
 function ballMovement() {
-    if (Ball.sprite.position.y - 16 < 0 || Ball.sprite.position.y + 16 > screenHeight) {
-        Sounds.hitwall.play();
-        Ball.yspeed = -Ball.yspeed;
+    if (admin) {
+        if (Ball.sprite.position.y - 16 < 0 || Ball.sprite.position.y + 16 > screenHeight) {
+            Sounds.hitwall.play();
+            socket.emit('ballTouchedWallClient');
+            Ball.yspeed = -Ball.yspeed;
+        }
+        Ball.sprite.setVelocity(Ball.xspeed, Ball.yspeed);
+        socket.emit('ballMovementClient', {
+            BallxServer: Ball.sprite.position.x,
+            BallyServer: Ball.sprite.position.y
+        })
+    } else {
+        Ball.sprite.position.x = ballx;
+        Ball.sprite.position.y = bally;
+        if (canPlayWallSound) {
+            Sounds.hitwall.play();
+            canPlayWallSound = false;
+        }
     }
-    Ball.sprite.setVelocity(Ball.xspeed, Ball.yspeed);
 }
 
 function score() {
-    if (Ball.sprite.position.x - 16 < 0) {
-        Sounds.opponentpoint.play();
-        Score2.value++;
-        resetBall();
-    }
-    if (Ball.sprite.position.x + 16 > screenWidth) {
-        Sounds.opponentpoint.play();
-        Score1.value++;
-        resetBall();
+    if (admin) {
+        if (Ball.sprite.position.x - 16 < 0) {
+            Sounds.opponentpoint.play();
+            Score2.value++;
+            socket.emit('paddle2ScoredClient')
+            resetBall();
+        }
+        if (Ball.sprite.position.x + 16 > screenWidth) {
+            Sounds.opponentpoint.play();
+            Score1.value++;
+            socket.emit('paddle1ScoredClient')
+            resetBall();
+        }
+    } else {
+        if (scored1) {
+            Score1.value++;
+            scored1 = false;
+        } 
+
+        if (scored2) {
+            Score2.value++
+            scored2 = false;
+        }
+       
+        if (canPlayScoreSound) {
+            Sounds.opponentpoint.play();
+            canPlayScoreSound = false;
+        }
     }
 }
 
@@ -218,12 +251,16 @@ function moveDown(paddle, control) {
 function touchBall() {
     Ball.sprite.overlap(Paddle1.sprite, function() {
         Sounds.hitpaddle.play();
-        Ball.xspeed = -Ball.xspeed;
+        if (Ball.xspeed < 0) {
+            Ball.xspeed = -Ball.xspeed;
+        }
         Ball.sprite.setVelocity(Ball.xspeed, Ball.yspeed);   
     });
     Ball.sprite.overlap(Paddle2.sprite, function() {
         Sounds.hitpaddle.play();
-        Ball.xspeed = -Ball.xspeed;
+        if (Ball.xspeed > 0) {
+            Ball.xspeed = -Ball.xspeed;
+        }
         Ball.sprite.setVelocity(Ball.xspeed, Ball.yspeed);
     });
 }

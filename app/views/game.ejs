@@ -92,14 +92,12 @@
             canPlayWallSound = true;
         })
 
-    } else {
-        socket.on('ballResetedServer', function(data) {
-            Ball.xspeed = data.BallServer.xspeed;
-            Ball.yspeed = data.BallServer.yspeed;
-        })
     }
 
-    
+    socket.on('ballResetedServer', function(data) {
+        Ball.xspeed = data.BallServer.xspeed;
+        Ball.yspeed = data.BallServer.yspeed;
+    })
 
 </script>
 <script src="sketch.js"></script>

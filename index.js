@@ -136,4 +136,7 @@ io.on('connection', function(socket) {
 function resetBallServer() {
     BallServer.xspeed = Math.random() < 0.5 ? 5 : -5;
     BallServer.yspeed = Math.random() < 0.5 ? 5 : -5;
+    console.log("Function called");
+    console.log("xspeed: " + BallServer.xspeed);
+    console.log("yspeed: " + BallServer.yspeed);
 }

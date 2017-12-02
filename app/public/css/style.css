@@ -14,48 +14,6 @@ body, html, button, input {
     overflow: hidden;
 }
 
-.score {
-    display: inline-block;
-    width: 64px;
-    height: 64px;
-    line-height: 64px;
-    text-align: center;
-}
-
-#net {
-    height: 100%;
-    width: 8px;
-    background: white;
-    position: absolute;
-    left: calc(50% - 4px);
-    top: 0;
-}
-
-.paddle {
-    width: 16px;
-    height: 64px;
-    background: white;
-    position: absolute;
-    top: calc(50% - 32px);
-}
-
-#paddle1 {
-    left: 16px;
-}
-
-#paddle2 {
-    right: 16px;
-}
-
-#ball {
-    width: 16px;
-    height: 16px;
-    background: white;
-    top: calc(50% - 8px);
-    left: calc(50% - 8px);
-    position: absolute;
-}
-
 .gameButtons button {
     width: 500px;
     height: 100px;
